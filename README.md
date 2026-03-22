@@ -36,68 +36,41 @@ El backend y el frontend web se despliegan en Vercel. El servidor externo **nunc
 
 Se necesitan **tres terminales** para correr todo en local.
 
-### 1. Clonar e instalar dependencias
+### 1. Instalar dependencias
 
 ```bash
-# Backend
-cd backend
-npm install
-
-# Servidor externo mock
-cd ../external
-npm install
+cd backend && npm install
+cd ../external && npm install
 ```
 
 ### 2. Configurar variables de entorno
 
 ```bash
-# Copiar el ejemplo y rellenar las API keys
-cp .env.example backend/.env
+cp backend/.env.example backend/.env
+cp external/.env.example external/.env
 ```
 
-Edita `backend/.env` con tus credenciales (ver sección [Variables de entorno](#variables-de-entorno)).
+Edita `backend/.env` y añade tu API key (ver sección [Variables de entorno](#variables-de-entorno)).
 
 ### 3. Terminal 1 — Servidor externo mock
 
 ```bash
 cd external
-npm start
+npm run dev
 # → External mock server running on port 3001
 ```
 
-### 4. Terminal 2 — Backend
+### 4. Terminal 2 — Backend + Frontend
 
-El backend necesita un servidor Express para correr en local. Crea un archivo `backend/server.js` si no existe (ver nota abajo) o usa:
+El backend sirve también el frontend estático en la misma URL:
 
 ```bash
 cd backend
-node -e "
-const express = require('express');
-const app = express();
-app.use(express.json());
-app.use('/api/session', require('./api/session'));
-app.use('/api/chat', require('./api/chat'));
-app.listen(3000, () => console.log('Backend running on http://localhost:3000'));
-"
+npm run dev
+# → Backend running on http://localhost:3000
 ```
 
-O bien, sirve el frontend estático desde el mismo proceso apuntando a `frontend/web/`.
-
-### 5. Terminal 3 — Frontend web
-
-El frontend es HTML/CSS/JS estático. Puedes servirlo con cualquier servidor estático:
-
-```bash
-# Con npx (sin instalación)
-npx serve frontend/web -p 8080
-
-# O con Python
-python3 -m http.server 8080 --directory frontend/web
-```
-
-Abre [http://localhost:8080](http://localhost:8080) en el navegador.
-
-> **Nota:** el frontend llama a `/api/...` en la misma origin. En local necesitas un proxy o configurar el servidor backend para servir también los archivos estáticos. La configuración de Vercel lo resuelve automáticamente en producción.
+Abre [http://localhost:3000](http://localhost:3000) en el navegador.
 
 ---
 

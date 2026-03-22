@@ -23,12 +23,13 @@ Para cualquier otra intención, responde:
  */
 async function detectIntent(message, aiProvider) {
   const messages = [
+    { role: 'system', content: SYSTEM_PROMPT },
     { role: 'user', content: message },
   ];
 
   let responseText;
   try {
-    const result = await aiProvider.chat(messages, { systemPrompt: SYSTEM_PROMPT });
+    const result = await aiProvider.chat(messages);
     responseText = result.content;
   } catch (err) {
     console.error('[intentDetector] AI provider error:', err.message);

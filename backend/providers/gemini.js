@@ -53,7 +53,7 @@ function toGeminiContents(messages) {
  */
 async function chat(messages, tools) {
   const apiKey = process.env.GEMINI_API_KEY;
-  const modelName = process.env.AI_MODEL || 'gemini-1.5-flash';
+  const modelName = process.env.AI_MODEL || 'gemini-2.0-flash';
 
   if (!apiKey) {
     throw new Error('[gemini] GEMINI_API_KEY is not set in environment variables.');
@@ -61,13 +61,20 @@ async function chat(messages, tools) {
 
   const genAI = new GoogleGenerativeAI(apiKey);
 
+  // Extract system message if present
+  const systemMsg = messages.find(m => m.role === 'system');
+  const chatMessages = messages.filter(m => m.role !== 'system');
+
   const modelConfig = { model: modelName };
+  if (systemMsg) {
+    modelConfig.systemInstruction = systemMsg.content;
+  }
   if (tools && tools.length > 0) {
     modelConfig.tools = [{ functionDeclarations: tools }];
   }
 
   const model = genAI.getGenerativeModel(modelConfig);
-  const contents = toGeminiContents(messages);
+  const contents = toGeminiContents(chatMessages);
 
   const result = await model.generateContent({ contents });
   const response = result.response;

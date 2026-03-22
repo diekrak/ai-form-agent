@@ -7,6 +7,7 @@
  *                 9.1, 9.2, 9.3, 13.1, 13.4
  */
 
+const log = require('../logger');
 const { getAIProvider } = require('../providers/aiProvider');
 const { detectIntent } = require('./intentDetector');
 const { validateOpenField, isCancelIntent } = require('./fieldProcessor');
@@ -28,14 +29,10 @@ const { submitForm } = require('../mcp/submitForm');
  */
 async function askFieldQuestion(field, aiProvider) {
   try {
-    const prompt = `Eres un asistente que ayuda a llenar formularios. 
-Genera una pregunta corta y amigable en español para solicitar el campo "${field.label}" al usuario.
-Responde ÚNICAMENTE con la pregunta, sin texto adicional.`;
-
-    const result = await aiProvider.chat(
-      [{ role: 'user', content: prompt }],
-      { systemPrompt: '' }
-    );
+    const result = await aiProvider.chat([
+      { role: 'system', content: 'Eres un asistente que ayuda a llenar formularios. Responde ÚNICAMENTE con la pregunta solicitada, sin texto adicional.' },
+      { role: 'user', content: `Genera una pregunta corta y amigable en español para solicitar el campo "${field.label}" al usuario.` },
+    ]);
     return result.content.trim();
   } catch {
     return `Por favor, ingresa el valor para: ${field.label}`;
@@ -53,14 +50,10 @@ Responde ÚNICAMENTE con la pregunta, sin texto adicional.`;
  */
 async function extractFieldValue(userMessage, field, aiProvider) {
   try {
-    const prompt = `Extrae el valor relevante para el campo "${field.label}" del siguiente mensaje del usuario.
-Responde ÚNICAMENTE con el valor extraído, sin texto adicional.
-Mensaje: "${userMessage}"`;
-
-    const result = await aiProvider.chat(
-      [{ role: 'user', content: prompt }],
-      { systemPrompt: '' }
-    );
+    const result = await aiProvider.chat([
+      { role: 'system', content: 'Eres un extractor de valores. Responde ÚNICAMENTE con el valor extraído, sin texto adicional.' },
+      { role: 'user', content: `Extrae el valor relevante para el campo "${field.label}" del siguiente mensaje: "${userMessage}"` },
+    ]);
     return result.content.trim();
   } catch {
     return userMessage.trim();
@@ -120,14 +113,29 @@ function resolveSelection(userMessage, options) {
 async function processMessage(session, userMessage) {
   const aiProvider = getAIProvider();
 
+  log.debug('agent', 'user message', { sessionId: session.sessionId, message: userMessage });
+
   // 1. Add user message to history
   session.history.push({ role: 'user', content: userMessage });
+
+  const hasActiveForm = !!session.formState;
+  const formField = hasActiveForm
+    ? session.formState.schema.fields[session.formState.currentFieldIndex]?.name
+    : null;
+
+  log.debug('agent', 'state', {
+    sessionId: session.sessionId,
+    hasActiveForm,
+    currentField: formField,
+    historyLength: session.history.length,
+  });
 
   let reply;
 
   try {
     // 2. Check for cancel intent at any point
     if (isCancelIntent(userMessage)) {
+      log.info('agent', 'cancel intent detected', { sessionId: session.sessionId });
       session.formState = null;
       reply =
         'El proceso ha sido cancelado. Tu historial de conversación se ha mantenido. ' +
@@ -144,11 +152,7 @@ async function processMessage(session, userMessage) {
       reply = await handleActiveForm(session, userMessage, aiProvider);
     }
   } catch (err) {
-    console.error('[agent] Unexpected error:', {
-      timestamp: new Date().toISOString(),
-      sessionId: session.sessionId,
-      error: err.message,
-    });
+    log.error('agent', 'unexpected error', { sessionId: session.sessionId, error: err.message });
     reply =
       'Lo siento, ocurrió un error inesperado. El servicio no está disponible temporalmente. ' +
       'Por favor, intenta de nuevo en unos momentos.';
@@ -159,6 +163,8 @@ async function processMessage(session, userMessage) {
 
   // 6. Add agent reply to history
   session.history.push({ role: 'assistant', content: reply });
+
+  log.debug('agent', 'agent reply', { sessionId: session.sessionId, reply });
 
   // 7. Return reply
   return { reply };
@@ -184,12 +190,9 @@ async function handleNoForm(session, userMessage, aiProvider) {
   let intentResult;
   try {
     intentResult = await detectIntent(userMessage, aiProvider);
+    log.debug('agent', 'intent detected', { sessionId: session.sessionId, intent: intentResult.intent });
   } catch (err) {
-    console.error('[agent] Intent detection error:', {
-      timestamp: new Date().toISOString(),
-      sessionId: session.sessionId,
-      error: err.message,
-    });
+    log.error('agent', 'intent detection error', { sessionId: session.sessionId, error: err.message });
     return 'Lo siento, no pude entender tu solicitud. ¿Podrías reformularla?';
   }
 
@@ -208,16 +211,13 @@ async function handleNoForm(session, userMessage, aiProvider) {
  * Initiates the form filling flow by fetching the schema and asking the first field.
  */
 async function startFormFlow(session, formType, aiProvider) {
+  log.info('agent', 'starting form flow', { sessionId: session.sessionId, formType });
   let schema;
   try {
     schema = await getFormSchema(formType);
+    log.debug('agent', 'schema loaded', { sessionId: session.sessionId, fields: schema.fields.map(f => f.name) });
   } catch (err) {
-    console.error('[agent] getFormSchema error:', {
-      timestamp: new Date().toISOString(),
-      sessionId: session.sessionId,
-      component: 'getFormSchema',
-      error: err.message,
-    });
+    log.error('agent', 'getFormSchema error', { sessionId: session.sessionId, error: err.message });
     return (
       'No fue posible obtener el formulario en este momento. ' +
       'Por favor, intenta nuevamente.'
@@ -296,6 +296,7 @@ async function handleOpenField(session, userMessage, field, aiProvider) {
   // Valid — save and advance (Req 5.3)
   formState.collectedValues[field.name] = userMessage.trim();
   formState.currentFieldIndex += 1;
+  log.debug('agent', 'open field accepted', { sessionId: session.sessionId, field: field.name, value: userMessage.trim() });
   return await advanceOrSubmit(session, aiProvider);
 }
 
@@ -314,35 +315,34 @@ async function handleClosedField(session, userMessage, field, aiProvider) {
   }
 
   // Call validate_field MCP (Req 6.2)
+  log.debug('agent', 'calling validateField MCP', { sessionId: session.sessionId, field: field.name, value: extractedValue });
   let results;
   try {
     results = await validateField(field.name, extractedValue);
+    log.debug('agent', 'validateField results', { sessionId: session.sessionId, field: field.name, count: results.length });
   } catch (err) {
-    console.error('[agent] validateField error:', {
-      timestamp: new Date().toISOString(),
-      sessionId: session.sessionId,
-      component: 'validateField',
-      field: field.name,
-      error: err.message,
-    });
+    log.error('agent', 'validateField error', { sessionId: session.sessionId, field: field.name, error: err.message });
     const question = await askFieldQuestion(field, aiProvider);
     return `Hubo un problema al validar el valor. Por favor, intenta de nuevo. ${question}`;
   }
 
   // 0 results → ask again (Req 6.6)
   if (!results || results.length === 0) {
+    log.debug('agent', 'no results for field', { sessionId: session.sessionId, field: field.name, value: extractedValue });
     const question = await askFieldQuestion(field, aiProvider);
     return `No encontré "${extractedValue}" en el sistema. Por favor, verifica e intenta de nuevo. ${question}`;
   }
 
   // 1 result → accept and advance (Req 6.3)
   if (results.length === 1) {
+    log.debug('agent', 'closed field accepted', { sessionId: session.sessionId, field: field.name, value: results[0].value });
     formState.collectedValues[field.name] = results[0].value;
     formState.currentFieldIndex += 1;
     return await advanceOrSubmit(session, aiProvider);
   }
 
   // Multiple results → present options (Req 6.4)
+  log.debug('agent', 'multiple results, presenting options', { sessionId: session.sessionId, field: field.name, count: results.length });
   formState._pendingOptions = results;
   return formatOptions(results);
 }
@@ -375,14 +375,10 @@ async function submitAndFinish(session, aiProvider) {
 
   let submitResult;
   try {
+    log.info('agent', 'submitting form', { sessionId: session.sessionId, formType: formState.formType, data: payload.data });
     submitResult = await submitForm(payload);
   } catch (err) {
-    console.error('[agent] submitForm error:', {
-      timestamp: new Date().toISOString(),
-      sessionId: session.sessionId,
-      component: 'submitForm',
-      error: err.message,
-    });
+    log.error('agent', 'submitForm error', { sessionId: session.sessionId, error: err.message });
     return (
       'Hubo un problema al enviar el formulario. ' +
       'Por favor, intenta enviarlo nuevamente escribiendo "enviar".'
@@ -398,6 +394,7 @@ async function submitAndFinish(session, aiProvider) {
 
   // Clear formState on success (Req 8.4)
   session.formState = null;
+  log.info('agent', 'form submitted successfully', { sessionId: session.sessionId, id: submitResult.id });
 
   const idMsg = submitResult.id ? ` (ID: ${submitResult.id})` : '';
   return (

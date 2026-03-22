@@ -4,12 +4,15 @@
   "description": "Backend for AI Form Agent - conversational form filling assistant",
   "main": "api/chat.js",
   "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js",
     "test": "jest --runInBand",
     "test:watch": "jest --watch"
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "express": "^4.18.2",
+    "dotenv": "^16.4.5",
     "node-fetch": "^3.3.2",
     "uuid": "^9.0.0"
   },

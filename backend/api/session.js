@@ -9,6 +9,7 @@
 
 const { v4: uuidv4 } = require('uuid');
 const { saveSession } = require('../session/memoryStore');
+const log = require('../logger');
 
 /**
  * Validates a mobile phone number.
@@ -54,6 +55,7 @@ async function startSession(req, res) {
   };
 
   await saveSession(sessionId, session);
+  log.info('session', 'session created', { sessionId, phone: phone.trim(), channel: 'web' });
 
   return res.status(200).json({ sessionId });
 }

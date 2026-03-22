@@ -10,6 +10,7 @@
 
 const { getSession, saveSession } = require('../session/memoryStore');
 const { processMessage } = require('../agent/agent');
+const log = require('../logger');
 
 /**
  * Express route handler for POST /api/chat
@@ -35,14 +36,19 @@ async function chat(req, res) {
   // Retrieve session
   const session = await getSession(sessionId.trim());
   if (!session) {
+    log.warn('chat', 'session not found', { sessionId });
     return res.status(404).json({ error: 'Sesión no encontrada.' });
   }
+
+  log.debug('chat', 'incoming message', { sessionId, message });
 
   // Process message through the agent
   const { reply } = await processMessage(session, message);
 
   // Persist updated session
   await saveSession(session.sessionId, session);
+
+  log.debug('chat', 'outgoing reply', { sessionId, reply });
 
   return res.status(200).json({ reply });
 }
