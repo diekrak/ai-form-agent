@@ -1,0 +1,30 @@
+{
+  "formType": "work_order",
+  "title": "Orden de Trabajo",
+  "fields": [
+    {
+      "name": "machine_id",
+      "label": "Número de máquina",
+      "type": "closed",
+      "validation": { "kind": "text" }
+    },
+    {
+      "name": "technician",
+      "label": "Técnico asignado",
+      "type": "closed",
+      "validation": { "kind": "text" }
+    },
+    {
+      "name": "description",
+      "label": "Descripción del problema",
+      "type": "open",
+      "validation": { "kind": "text" }
+    },
+    {
+      "name": "priority",
+      "label": "Prioridad",
+      "type": "open",
+      "validation": { "kind": "regex", "pattern": "^(alta|media|baja)$" }
+    }
+  ]
+}

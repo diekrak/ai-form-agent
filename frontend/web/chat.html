@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat — AI Form Agent</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="screen chat-screen">
+    <!-- Header -->
+    <header class="chat-header">
+      <div class="avatar" aria-hidden="true">🤖</div>
+      <div class="info">
+        <h2>AI Form Agent</h2>
+        <p>Asistente de formularios</p>
+      </div>
+    </header>
+
+    <!-- Messages -->
+    <main id="messages-area" class="messages-area" aria-live="polite" aria-label="Conversación">
+    </main>
+
+    <!-- Input -->
+    <footer class="input-area">
+      <input
+        id="message-input"
+        type="text"
+        placeholder="Escribe un mensaje…"
+        autocomplete="off"
+        aria-label="Mensaje"
+      />
+      <button id="send-btn" class="send-btn" aria-label="Enviar">&#9658;</button>
+    </footer>
+  </div>
+
+  <script src="js/chat.js"></script>
+</body>
+</html>

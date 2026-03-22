@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Form Agent</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="screen phone-screen">
+    <div class="card">
+      <h1 class="app-title">AI Form Agent</h1>
+      <p class="subtitle">Ingresa tu número móvil para comenzar</p>
+
+      <div class="form-group">
+        <label for="phone-input">Número móvil</label>
+        <input
+          id="phone-input"
+          type="tel"
+          placeholder="+1234567890"
+          autocomplete="tel"
+          maxlength="16"
+        />
+        <span id="phone-error" class="error-msg" aria-live="polite"></span>
+      </div>
+
+      <button id="start-btn" class="btn-primary">Iniciar chat</button>
+    </div>
+  </div>
+
+  <script src="js/phone.js"></script>
+</body>
+</html>

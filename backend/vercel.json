@@ -1,0 +1,22 @@
+{
+  "functions": {
+    "backend/api/session.js": {
+      "memory": 128,
+      "maxDuration": 10
+    },
+    "backend/api/chat.js": {
+      "memory": 256,
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/session/start",
+      "dest": "backend/api/session.js"
+    },
+    {
+      "src": "/api/chat",
+      "dest": "backend/api/chat.js"
+    }
+  ]
+}

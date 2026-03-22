@@ -1,0 +1,152 @@
+{
+  "machine_id": [
+    {
+      "query": "M-001",
+      "results": [
+        {
+          "value": "M-001",
+          "label": "Máquina M-001 — Torno CNC",
+          "metadata": { "location": "Planta A", "status": "activa" }
+        }
+      ]
+    },
+    {
+      "query": "M-002",
+      "results": [
+        {
+          "value": "M-002",
+          "label": "Máquina M-002 — Fresadora",
+          "metadata": { "location": "Planta B", "status": "activa" }
+        }
+      ]
+    },
+    {
+      "query": "M-003",
+      "results": [
+        {
+          "value": "M-003",
+          "label": "Máquina M-003 — Prensa Hidráulica",
+          "metadata": { "location": "Planta A", "status": "mantenimiento" }
+        }
+      ]
+    },
+    {
+      "query": "torno",
+      "results": [
+        {
+          "value": "M-001",
+          "label": "Máquina M-001 — Torno CNC",
+          "metadata": { "location": "Planta A", "status": "activa" }
+        },
+        {
+          "value": "M-007",
+          "label": "Máquina M-007 — Torno Convencional",
+          "metadata": { "location": "Planta C", "status": "activa" }
+        }
+      ]
+    },
+    {
+      "query": "planta",
+      "results": [
+        {
+          "value": "M-001",
+          "label": "Máquina M-001 — Torno CNC",
+          "metadata": { "location": "Planta A", "status": "activa" }
+        },
+        {
+          "value": "M-002",
+          "label": "Máquina M-002 — Fresadora",
+          "metadata": { "location": "Planta B", "status": "activa" }
+        },
+        {
+          "value": "M-003",
+          "label": "Máquina M-003 — Prensa Hidráulica",
+          "metadata": { "location": "Planta A", "status": "mantenimiento" }
+        }
+      ]
+    },
+    {
+      "query": "M-999",
+      "results": []
+    },
+    {
+      "query": "desconocida",
+      "results": []
+    }
+  ],
+  "technician": [
+    {
+      "query": "juan",
+      "results": [
+        {
+          "value": "T-101",
+          "label": "Juan García",
+          "metadata": { "specialty": "mecánica", "available": true }
+        }
+      ]
+    },
+    {
+      "query": "maria",
+      "results": [
+        {
+          "value": "T-102",
+          "label": "María López",
+          "metadata": { "specialty": "eléctrica", "available": true }
+        }
+      ]
+    },
+    {
+      "query": "carlos",
+      "results": [
+        {
+          "value": "T-103",
+          "label": "Carlos Martínez",
+          "metadata": { "specialty": "hidráulica", "available": false }
+        }
+      ]
+    },
+    {
+      "query": "garcia",
+      "results": [
+        {
+          "value": "T-101",
+          "label": "Juan García",
+          "metadata": { "specialty": "mecánica", "available": true }
+        },
+        {
+          "value": "T-104",
+          "label": "Ana García",
+          "metadata": { "specialty": "electrónica", "available": true }
+        }
+      ]
+    },
+    {
+      "query": "tecnico",
+      "results": [
+        {
+          "value": "T-101",
+          "label": "Juan García",
+          "metadata": { "specialty": "mecánica", "available": true }
+        },
+        {
+          "value": "T-102",
+          "label": "María López",
+          "metadata": { "specialty": "eléctrica", "available": true }
+        },
+        {
+          "value": "T-103",
+          "label": "Carlos Martínez",
+          "metadata": { "specialty": "hidráulica", "available": false }
+        }
+      ]
+    },
+    {
+      "query": "T-999",
+      "results": []
+    },
+    {
+      "query": "desconocido",
+      "results": []
+    }
+  ]
+}
