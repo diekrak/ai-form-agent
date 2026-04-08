@@ -181,8 +181,8 @@ async function handleNoForm(session, userMessage, aiProvider) {
   // First message in the session → send welcome
   if (session.history.length === 1) {
     return (
-      '¡Hola! Bienvenido al asistente de formularios. ' +
-      '¿En qué puedo ayudarte hoy? Puedo ayudarte a crear una Orden de Trabajo, entre otras cosas.'
+      '¡Hola! Bienvenido al asistente de la Fundación Soshuellitas. ' +
+      '¿En qué puedo ayudarte hoy? Puedo ayudarte a iniciar tu solicitud de adopción.'
     );
   }
 
@@ -196,14 +196,14 @@ async function handleNoForm(session, userMessage, aiProvider) {
     return 'Lo siento, no pude entender tu solicitud. ¿Podrías reformularla?';
   }
 
-  if (intentResult.intent === 'create_work_order') {
-    return await startFormFlow(session, intentResult.formType || 'work_order', aiProvider);
+  if (intentResult.intent === 'create_adoption_request') {
+    return await startFormFlow(session, intentResult.formType, aiProvider);
   }
 
   // Unknown intent
   return (
     'No entendí bien lo que necesitas. ' +
-    'Puedo ayudarte a crear una Orden de Trabajo. ¿Es eso lo que deseas?'
+    '¿Deseas iniciar una solicitud de adopción?'
   );
 }
 
@@ -397,8 +397,10 @@ async function submitAndFinish(session, aiProvider) {
   log.info('agent', 'form submitted successfully', { sessionId: session.sessionId, id: submitResult.id });
 
   const idMsg = submitResult.id ? ` (ID: ${submitResult.id})` : '';
+  const successMsg = '¡Tu solicitud de adopción ha sido enviada exitosamente!';
+
   return (
-    `¡La Orden de Trabajo fue creada exitosamente${idMsg}! ` +
+    `${successMsg}${idMsg} Revisa tu correo para los siguientes pasos. ` +
     '¿Hay algo más en lo que pueda ayudarte?'
   );
 }

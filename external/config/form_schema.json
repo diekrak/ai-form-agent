@@ -1,30 +1,409 @@
 {
-  "formType": "work_order",
-  "title": "Orden de Trabajo",
+  "formType": "adoption_form",
+  "title": "Solicitud de Adopción",
   "fields": [
     {
-      "name": "machine_id",
-      "label": "Número de máquina",
-      "type": "closed",
-      "validation": { "kind": "text" }
-    },
-    {
-      "name": "technician",
-      "label": "Técnico asignado",
-      "type": "closed",
-      "validation": { "kind": "text" }
-    },
-    {
-      "name": "description",
-      "label": "Descripción del problema",
+      "name": "fecha",
+      "label": "Fecha",
       "type": "open",
-      "validation": { "kind": "text" }
+      "validation": {
+        "kind": "text"
+      }
     },
     {
-      "name": "priority",
-      "label": "Prioridad",
+      "name": "nombre_gato",
+      "label": "Nombre del Gato que deseas adoptar (como aparece en la Fundación)",
       "type": "open",
-      "validation": { "kind": "regex", "pattern": "^(alta|media|baja)$" }
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "nombre_completo",
+      "label": "Nombre completo de la persona que desea adoptar",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "cedula",
+      "label": "Cédula",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "edad",
+      "label": "Edad",
+      "type": "open",
+      "validation": {
+        "kind": "number"
+      }
+    },
+    {
+      "name": "telefono",
+      "label": "Teléfono",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "direccion",
+      "label": "Dirección",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "correo",
+      "label": "Correo electrónico",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "empresa",
+      "label": "Empresa donde labora",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "ref_personal_nombre",
+      "label": "Referencia Personal Nombre y apellido",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "ref_personal_telefono",
+      "label": "Teléfono (de la Referencia Personal)",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "ref_familiar_nombre",
+      "label": "Referencia Familiar Nombre y apellido",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "ref_familiar_telefono",
+      "label": "Teléfono (de la Referencia Familiar)",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "miembros_familia",
+      "label": "Número de miembros de tu familia (2, 3, 4, mas de 4)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(2|3|4|mas de 4)$"
+      }
+    },
+    {
+      "name": "hijos_menores",
+      "label": "¿En tu casa hay menores de edad? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "edad_hijos",
+      "label": "En caso de ser SI la respuesta anterior, ¿de qué edad?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "familia_acuerdo",
+      "label": "¿Están todos los miembros de la familia de acuerdo con la adopción de un animal? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "caso_embarazo",
+      "label": "¿En caso de un embarazo, y de las dichas frases de los médicos “es mejor salir del animal”, ustedes que harían?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "familia_alergias",
+      "label": "¿En su familia hay alguien con problemas de alergia? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "accion_alergia",
+      "label": "¿Qué haría si algún miembro de su familia resulta alérgico al animal?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "desacuerdo_familiar",
+      "label": "¿Qué pasa si una sola persona de tu familia no está de acuerdo con la adopción del animal?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "animales_anteriores",
+      "label": "¿Qué animales ha tenido? (Perro, Gato, Ambos, Otros)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Perro|Gato|Ambos|Otros)$"
+      }
+    },
+    {
+      "name": "destino_anteriores",
+      "label": "Los que ya no están con usted, ¿Qué paso con ellos?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "tiene_animales_actual",
+      "label": "¿Actualmente, tiene animales? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "tipo_animales_actual",
+      "label": "¿Qué tipo de animales tiene? (Perro, Gato, Ambos, Otros)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Perro|Gato|Ambos|Otros)$"
+      }
+    },
+    {
+      "name": "espacio_adecuado",
+      "label": "¿Tiene el espacio adecuado para tener un animal? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "actividades_planeadas",
+      "label": "¿Qué tipo de actividades planea realizar con el animal?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "donde_dormira",
+      "label": "¿En dónde dormirá?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "horas_solo",
+      "label": "¿Cuántas horas al día permanecerá solo? (De 2 a 4 horas, De 4 a 6 horas, Todo el dia, Nunca)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(De 2 a 4 horas|De 4 a 6 horas|Todo el dia|Nunca)$"
+      }
+    },
+    {
+      "name": "lugar_solo",
+      "label": "¿Dónde permanecerá el animal mientras este solo en casa? (Dentro de la casa, En el patio, Donde un familiar o vecino, Otros)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Dentro de la casa|En el patio|Donde un familiar o vecino|Otros)$"
+      }
+    },
+    {
+      "name": "vivienda_propiedad",
+      "label": "¿Vive en casa o apartamento? (Propio, Arrendado, Familiar)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Propio|Arrendado|Familiar)$"
+      }
+    },
+    {
+      "name": "arrendatario_acuerdo",
+      "label": "En caso que sea arrendada, ¿el arrendatario está de acuerdo con tener animales? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "accion_no_acuerdo",
+      "label": "En caso de ser NO, ¿Qué haría usted?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "mudanza_accion",
+      "label": "¿Qué pasaría si se tuviera que mudar de casa, ciudad o país?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "conocimiento_gastos",
+      "label": "¿Conoce los gastos que implica tener un animal? (Si, No lo tengo muy claro, No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No lo tengo muy claro|No)$"
+      }
+    },
+    {
+      "name": "que_busca",
+      "label": "¿Qué tipo de animal busca perro o gato? (Perro, Gato)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Perro|Gato)$"
+      }
+    },
+    {
+      "name": "veterinario",
+      "label": "¿A qué veterinario acude o acudiría cuando su animal esté enfermo?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "alimento_marca",
+      "label": "¿Qué alimento (Marca) les da a sus mascotas o cuál le daría al que vas a adoptar?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "por_que_adoptar",
+      "label": "¿Por qué decidió adoptar un animal?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "costo_esterilizacion",
+      "label": "¿Está de acuerdo con asumir el costo de la esterilización? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "mallas_seguridad",
+      "label": "Si desea adoptar un gato, ¿Tiene mallas en su hogar que le generen seguridad al animal? (Si tengo, No tengo)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si tengo|No tengo)$"
+      }
+    },
+    {
+      "name": "instalar_mallas",
+      "label": "En caso de NO, ¿está de acuerdo con mandar a colocar las mallas? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "preparado_comportamiento",
+      "label": "¿Estará preparado(a) en caso de que sus actuales mascotas presenten algún tipo de problemas de comportamiento hacia su nuevo amigo?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "solucion_problemas",
+      "label": "¿Cómo planea solucionar los problemas iniciales entre mascotas y cuánto tiempo está dispuesto(a) a prestar para encontrar el balance?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "adopcion_anterior",
+      "label": "¿Usted ha adoptado algún perro rescatado anteriormente? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "reubicado_mascota",
+      "label": "¿Alguna vez ha reubicado alguna mascota? (Si/No)",
+      "type": "open",
+      "validation": {
+        "kind": "regex",
+        "pattern": "^(Si|No)$"
+      }
+    },
+    {
+      "name": "explicacion_reubicacion",
+      "label": "Si la anterior respuesta fue SI explique brevemente",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "problemas_comportamiento",
+      "label": "¿Cómo lidiaría con problemas de comportamiento como ladridos, maullidos accidentes, curiosidad destructiva, comportamiento destructivo, y comportamientos rebeldes?",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
     }
   ]
 }

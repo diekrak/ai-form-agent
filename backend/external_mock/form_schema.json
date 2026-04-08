@@ -1,0 +1,30 @@
+{
+  "formType": "adoption_form",
+  "title": "Solicitud de Adopción",
+  "fields": [
+    {
+      "name": "fecha",
+      "label": "Fecha",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "nombre_gato",
+      "label": "Nombre del Gato que deseas adoptar (como aparece en la Fundación)",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    },
+    {
+      "name": "nombre_completo",
+      "label": "Nombre completo de la persona que desea adoptar",
+      "type": "open",
+      "validation": {
+        "kind": "text"
+      }
+    }
+  ]
+}

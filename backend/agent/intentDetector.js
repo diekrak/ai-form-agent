@@ -8,8 +8,8 @@
 const SYSTEM_PROMPT = `Eres un clasificador de intenciones para un agente de formularios.
 Analiza el mensaje del usuario y responde ÚNICAMENTE con un objeto JSON válido, sin texto adicional.
 
-Si el usuario quiere crear una orden de trabajo (menciona "orden de trabajo", "work order", "reparación", "máquina", o intenciones similares), responde:
-{"intent":"create_work_order","formType":"work_order"}
+Si el usuario quiere iniciar una solicitud de adopción (menciona "adoptar", "adopción", "gato", "perro", "formulario de adopción", o intenciones similares), responde:
+{"intent":"create_adoption_request","formType":"adoption_form"}
 
 Para cualquier otra intención, responde:
 {"intent":"unknown"}`;
@@ -41,8 +41,8 @@ async function detectIntent(message, aiProvider) {
     const cleaned = responseText.replace(/```(?:json)?\s*/gi, '').replace(/```/g, '').trim();
     const parsed = JSON.parse(cleaned);
 
-    if (parsed.intent === 'create_work_order') {
-      return { intent: 'create_work_order', formType: parsed.formType || 'work_order' };
+    if (parsed.intent === 'create_adoption_request') {
+      return { intent: parsed.intent, formType: parsed.formType };
     }
   } catch (err) {
     console.error('[intentDetector] Failed to parse AI response:', responseText, err.message);

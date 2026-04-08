@@ -1,0 +1,26 @@
+{
+  "machine_id": [
+    {
+      "query": "M-001",
+      "results": [
+        {
+          "value": "M-001",
+          "label": "Máquina M-001 — Torno CNC",
+          "metadata": { "location": "Planta A", "status": "activa" }
+        }
+      ]
+    }
+  ],
+  "technician": [
+    {
+      "query": "juan",
+      "results": [
+        {
+          "value": "T-101",
+          "label": "Juan García",
+          "metadata": { "specialty": "mecánica", "available": true }
+        }
+      ]
+    }
+  ]
+}
