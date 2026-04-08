@@ -7,6 +7,10 @@
     "backend/api/chat.js": {
       "memory": 256,
       "maxDuration": 30
+    },
+    "backend/api/external_mock.js": {
+      "memory": 128,
+      "maxDuration": 5
     }
   },
   "routes": [
@@ -17,6 +21,10 @@
     {
       "src": "/api/chat",
       "dest": "backend/api/chat.js"
+    },
+    {
+      "src": "/api/external-mock/(.*)",
+      "dest": "backend/api/external_mock.js"
     }
   ]
 }

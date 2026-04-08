@@ -1,29 +1,31 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
+const path = require('path');
+const fs = require('fs');
 
-require('dotenv').config();
+const router = express.Router();
 
-const app = express();
-app.use(express.json());
+// Helper to load config files
+const loadConfig = (filename) => {
+  const filePath = path.join(__dirname, '../external_mock', filename);
+  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+};
 
-const formSchema = require('./config/form_schema.json');
-const responses = require('./config/responses.json');
+const formSchema = loadConfig('form_schema.json');
+const responses = loadConfig('responses.json');
 
-// GET /form-schema/:type
-app.get('/form-schema/:type', (req, res) => {
+// GET /api/external-mock/form-schema/:type
+router.get('/form-schema/:type', (req, res) => {
   const { type } = req.params;
-  console.debug(`[external] GET /form-schema/${type}`);
   if (formSchema.formType === type) {
     return res.json(formSchema);
   }
-  console.warn(`[external] schema not found for type: ${type}`);
   return res.status(404).json({ error: `Schema not found for type: ${type}` });
 });
 
-// POST /validate-field
-app.post('/validate-field', (req, res) => {
+// POST /api/external-mock/validate-field
+router.post('/validate-field', (req, res) => {
   const { fieldName, value } = req.body;
-  console.debug(`[external] POST /validate-field`, { fieldName, value });
 
   if (!fieldName || value === undefined) {
     return res.status(400).json({ error: 'fieldName and value are required' });
@@ -31,7 +33,6 @@ app.post('/validate-field', (req, res) => {
 
   const fieldResponses = responses[fieldName];
   if (!fieldResponses) {
-    console.debug(`[external] no responses configured for field: ${fieldName}`);
     return res.json([]);
   }
 
@@ -53,27 +54,25 @@ app.post('/validate-field', (req, res) => {
     }
   }
 
-  console.debug(`[external] validate-field results`, { fieldName, value, count: results.length });
   return res.json(results);
 });
 
-// POST /submit-form
-app.post('/submit-form', (req, res) => {
+// POST /api/external-mock/submit-form
+router.post('/submit-form', (req, res) => {
   const { formType, data } = req.body;
-  console.debug(`[external] POST /submit-form`, { formType, data });
 
   if (!formType || !data) {
     return res.status(400).json({ error: 'formType and data are required' });
   }
 
   const id = uuidv4();
-  console.info(`[external] form submitted`, { formType, id });
   return res.json({ success: true, id });
 });
 
-const PORT = process.env.EXTERNAL_PORT || 3010;
-app.listen(PORT, () => {
-  console.log(`External mock server running on port ${PORT}`);
-});
-
-module.exports = app;
+module.exports = router;
+module.exports.handler = (req, res) => {
+  // This helps when used as a direct Vercel function if needed
+  router(req, res, () => {
+    res.status(404).json({ error: 'Not found in external-mock' });
+  });
+};

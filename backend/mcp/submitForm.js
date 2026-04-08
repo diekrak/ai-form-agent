@@ -24,7 +24,8 @@ async function submitForm(formData) {
 
     if (process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY && process.env.GOOGLE_SHEET_ID) {
       log.warn('submitForm', 'Guardando a  Google Sheets.');
-      await appendRowToSheet(row, 'Sheet1!A1'); // Ajusta "Hoja 1" o "Sheet1" según el idioma de tu Google Sheet
+      const range = process.env.GOOGLE_SHEET_RANGE || 'Sheet1!A1';
+      await appendRowToSheet(row, range);
     } else {
       log.warn('submitForm', 'Faltan credenciales de Google Sheets, omitiendo guardado.');
     }

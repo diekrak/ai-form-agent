@@ -1,7 +1,7 @@
 {
   "name": "ai-form-agent-backend",
   "version": "1.0.0",
-  "description": "Backend for AI Form Agent - conversational form filling assistant",
+  "description": "Backend for Fundación Soshuellitas - conversational adoption assistant",
   "main": "api/chat.js",
   "scripts": {
     "dev": "node --watch server.js",

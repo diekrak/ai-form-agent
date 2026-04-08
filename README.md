@@ -1,6 +1,4 @@
-# AI Form Agent
-
-Agente conversacional que guía a los usuarios en el llenado de formularios paso a paso mediante chat. El MVP implementa la creación de **Órdenes de Trabajo** para reparación de máquinas.
+Agente conversacional que guía a los usuarios en el llenado de solicitudes de adopción paso a paso mediante chat para la **Fundación Soshuellitas**.
 
 ## Arquitectura
 
@@ -144,7 +142,7 @@ Envía un mensaje al agente y recibe la respuesta.
 { "sessionId": "uuid-v4", "message": "quiero crear una orden de trabajo" }
 
 // Response 200
-{ "reply": "Vamos a crear una Orden de Trabajo. ¿Cuál es el número de máquina?" }
+{ "reply": "Vamos a crear una Solicitud de Adopción. ¿Cuál es la fecha?" }
 
 // Response 404 — sesión no encontrada
 { "error": "Sesión no encontrada." }

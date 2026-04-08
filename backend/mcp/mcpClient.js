@@ -4,7 +4,7 @@
 const log = require('../logger');
 
 const TIMEOUT_MS = 5000;
-const BASE_URL = process.env.EXTERNAL_SERVER_URL || 'http://localhost:3001';
+const BASE_URL = process.env.EXTERNAL_SERVER_URL || 'http://localhost:3010';
 
 /**
  * Wraps fetch with a timeout signal.
